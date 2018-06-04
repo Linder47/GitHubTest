@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
+import { Switch, Route } from 'react-router-dom';
 import Search from './components/Search';
+import Repositories from './components/Repositories';
 
-class App extends Component {
-  render() {
-    return (
-      <Search />
-    );
-  }
-}
-
+const App = () => (
+      <div>
+        <Switch>
+          <Route path='/' component={Search} />
+          <Route path='/owner' component={Repositories} />
+        </Switch>
+      </div>
+)
 export default App;

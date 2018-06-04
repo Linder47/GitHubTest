@@ -1,43 +1,39 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import * as actions from '../store/actions';
 
-class SearchUserForm extends Component {
-    handleSearchUser = (name) => {
-        this.props.searchUser(name);
-        this.props.getData(name);
-        this.props.reset();
-    }
+const SearchUserForm = (props) => {
+    const handleSearchUser = (name) => {
+        console.log(props);
+        props.fetchRepos(name.searchingRep);
+        props.reset();
+        //this.props.history.push('/search/' + this.state.addText);
+    };
 
-    render() {
-        return <form onSubmit={this.props.handleSubmit(this.handleSearchUser)}>
+    return (
+        <form onSubmit={props.handleSubmit(handleSearchUser)}>
             <div>
-                <Field name="text" component="input" type="text" />
+                <Field name="searchingRep" component="input" type="text" placeholder='here' />
             </div>
             <button type='submit'>Search</button>
-        </form>;
-    }
+        </form>
+    )
 }
 
-const mapStateToProps = (state) => ({
-    name: state.name,
-});
+const mapStateToProps = () => {
+    console.log(props);
+    const props = {};
+    return props;
+};
 
 const mapDispatchToProps = dispatch => ({
-    searchUser: name => dispatch(actions.searchUser(name)),
-    getData: name => dispatch(actions.getData(name)),
+    fetchRepos: name => dispatch(actions.fetchRepos(name)),
 });
 
-const SearchUser = connect(mapStateToProps, mapDispatchToProps, actions)(SearchUserForm);
 
-export default reduxForm({
+const SearchUser = reduxForm({
     form: 'searchUser',
-    keepDirtyOnReinitialize: true,
-})(SearchUser);
+})(SearchUserForm);
 
-
-
-// export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({
-//     form: 'searchUser',
-// }));
+export default connect(mapStateToProps, mapDispatchToProps)(SearchUser);
