@@ -4,15 +4,21 @@ import { connect } from 'react-redux';
 import * as actions from '../store/actions';
 
 const SearchUserForm = (props) => {
-    const handleSearchUser = (name) => {
-        console.log(props);
-        props.fetchRepos(name.searchingRep);
+    const handleSearchUser = e => {
+        e.preventDefault();
+        console.log(e);
+
+        const name = props.props.form.searchUser.values.searchingRep;
+        console.log(name);
+        props.fetchRepos(name);
         props.reset();
-        //this.props.history.push('/search/' + this.state.addText);
+
+        props.history.push('/owner/' + name + '/repos/');
     };
 
     return (
-        <form onSubmit={props.handleSubmit(handleSearchUser)}>
+        //    <form onSubmit={props.handleSubmit(handleSearchUser)}> 
+        <form onSubmit={handleSearchUser}>
             <div>
                 <Field name="searchingRep" component="input" type="text" placeholder='here' />
             </div>
@@ -21,14 +27,22 @@ const SearchUserForm = (props) => {
     )
 }
 
-const mapStateToProps = () => {
-    console.log(props);
-    const props = {};
-    return props;
-};
+// const mapStateToProps = () => {
+//     const props = {};
+//     // console.log(props);
+//     return props;
+// };
+
+const mapStateToProps = (state) => ({
+    // console.log(state);
+    // console.log(state.inputName);
+    props: state,
+    // repos: state.reducer.repos;
+});
 
 const mapDispatchToProps = dispatch => ({
     fetchRepos: name => dispatch(actions.fetchRepos(name)),
+    searchUser: name => dispatch(actions.searchUser(name)),
 });
 
 

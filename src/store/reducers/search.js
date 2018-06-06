@@ -3,7 +3,7 @@ import { combineReducers } from 'redux';
 import { reducer as formReducer } from 'redux-form';
 
 const initialState = {
-    name: '',
+    // name: '',
     repos: {},
     loading: true,
     error: false,
@@ -36,7 +36,9 @@ const reducer = (state = initialState, action) => {
     }
 }
 
-export default combineReducers({
-    form: formReducer,
-    reducer
-});
+export default reducer;
+
+// export default combineReducers({
+//     form: formReducer,
+//     reducer
+// });

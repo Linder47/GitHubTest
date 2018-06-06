@@ -29,9 +29,9 @@ export const fetchRepos = name => async dispatch => {
     }
 };
 
-// export const searchUser = (name) => ({
-//     type: actionTypes.NEW_SEARCH_USER,
-//     payload: {
-//         name,
-//     }
-// });
+export const searchUser = (name) => ({
+    type: actionTypes.NEW_SEARCH_USER,
+    payload: {
+        name,
+    }
+});
