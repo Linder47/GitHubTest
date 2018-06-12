@@ -5,14 +5,6 @@ import Spin from './Spinner/Spin';
 import * as actions from '../store/actions';
 
 class Repositories extends Component {
-    // ComponentDidMount() {
-    //     console.log(this.props);
-    //     console.log(window.location.href);
-    //     if (!this.props.repos) {
-    //         //достать из урла оунера и пихнуть его в фетч
-    //     }
-    // }
-
     renderSpin() {
         const pathname = window.location.pathname;
         const name = this.getName(pathname);
@@ -23,11 +15,19 @@ class Repositories extends Component {
     renderReps() {
         const repositories = this.props.repos.repos;
         console.log(this.props.repos.repos);
+        console.log(this.props.error);
         return (
-            <div>
-                {repositories.map(i => <Card id={i.id} key={i.id} name={i.name} description={i.description} fork={i.fork} starsCount={i.stargazers_count} updatedDate={i.updated_at} language={i.language} />)}
-            </div>
+            repositories.length !== 0 ?
+                <div>
+                    {repositories.map(i => <Card id={i.id} key={i.id} elem={i} name={i.name} description={i.description} fork={i.fork} starsCount={i.stargazers_count} updatedDate={i.updated_at} language={i.language} />)}
+                </div>
+                : <div> <p>This user doesn't have any repositories.</p> </div>
         );
+    }
+    renderError() {
+        return (
+            <div><p>Sorry, there is no user/organization with such a name.</p></div>
+        )
     }
 
     getName = (pathname) => {
@@ -37,8 +37,9 @@ class Repositories extends Component {
 
     render() {
         const loading = this.props.loading;
+        const error = this.props.error;
         return (
-            loading ? this.renderSpin() : this.renderReps()
+            loading ? this.renderSpin() : error ? this.renderError() : this.renderReps()
         );
     }
 }
@@ -46,6 +47,7 @@ class Repositories extends Component {
 const mapStateToProps = (state) => ({
     repos: state.search.repos,
     loading: state.search.loading,
+    error: state.search.error,
 });
 
 const mapDispatchToProps = dispatch => ({
