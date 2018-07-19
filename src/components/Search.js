@@ -1,53 +1,48 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import * as actions from '../store/actions';
 
 const SearchUserForm = (props) => {
-    const handleSearchUser = e => {
-        e.preventDefault();
-        console.log(e);
+  console.log(props.props);
+  const handleSearchUser = (e) => {
+    e.preventDefault();
+    const name = props.props.form.searchUser.values.searchingRep;
+    console.log(props);
+    console.log(props.props.form.searchUser.values.searchingRep);
+    props.fetchRepos(name);
+    const link = `/owner/${name}/repos/`;
+    const { history } = props;
+    history.push(link);
+  };
 
-        const name = props.props.form.searchUser.values.searchingRep;
-        console.log(name);
-        props.fetchRepos(name);
-        props.reset();
+  return (
+    <form onSubmit={handleSearchUser}>
+      <div>
+        <Field name="searchingRep" component="input" type="text" placeholder="here" />
+      </div>
+      <button type="submit">Search</button>
+    </form>
+  );
+};
 
-        props.history.push('/owner/' + name + '/repos/');
-    };
-
-    return (
-        //    <form onSubmit={props.handleSubmit(handleSearchUser)}> 
-        <form onSubmit={handleSearchUser}>
-            <div>
-                <Field name="searchingRep" component="input" type="text" placeholder='here' />
-            </div>
-            <button type='submit'>Search</button>
-        </form>
-    )
-}
-
-// const mapStateToProps = () => {
-//     const props = {};
-//     // console.log(props);
-//     return props;
-// };
-
-const mapStateToProps = (state) => ({
-    // console.log(state);
-    // console.log(state.inputName);
-    props: state,
-    // repos: state.reducer.repos;
+const mapStateToProps = state => ({
+  props: state,
 });
 
 const mapDispatchToProps = dispatch => ({
-    fetchRepos: name => dispatch(actions.fetchRepos(name)),
-    searchUser: name => dispatch(actions.searchUser(name)),
+  fetchRepos: name => dispatch(actions.fetchRepos(name)),
+  searchUser: name => dispatch(actions.searchUser(name)),
 });
 
+SearchUserForm.propTypes = {
+  props: PropTypes.instanceOf(Object).isRequired,
+  fetchRepos: PropTypes.func.isRequired,
+};
 
 const SearchUser = reduxForm({
-    form: 'searchUser',
+  form: 'searchUser',
 })(SearchUserForm);
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchUser);
